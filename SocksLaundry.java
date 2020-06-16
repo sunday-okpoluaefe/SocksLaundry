@@ -2,13 +2,8 @@ import java.util.*;
 
 public class SocksLaundry {
 
-    public static void main(String[] args) {
-        System.out.println(solution(2, new int[] {1,2,1,1}, new int[]{1,4,3,2,4}));
+    public int getMaximumPairOfSocks(int noOfWash, int[] cleanPile, int[] dirtyPile){
 
-    }
-
-    static int solution(int noOfWash, int[] cleanPair, int[] dirtyPair){
-        
         int noCleanPairs = 0;
         int noAllDirtyPairs = 0;
         int noOfWatchInClean_Dirty = 0;
@@ -16,15 +11,13 @@ public class SocksLaundry {
         Set<Integer> b = new HashSet<Integer>();
         Set<Integer> noRemainingDirtySocks = new HashSet<Integer>();
 
-        if(noOfWash > 50 || noOfWash < 0) return 0;
-        
+        Arrays.sort(cleanPile);
         // get number of clean pairs
-        Arrays.sort(cleanPair);
-        for (int value : cleanPair) {
+        for (int value : cleanPile) {
 
             if (a.isEmpty())
                 a.add(value);
-             else if (!a.contains(value)) {
+            else if (!a.contains(value)) {
                 a.add(value);
 
             } else if (a.contains(value)) {
@@ -37,9 +30,9 @@ public class SocksLaundry {
             return noCleanPairs;
         }
 
-        Arrays.sort(dirtyPair);
+        Arrays.sort(dirtyPile);
         while(noOfWash > 0){
-            for (int i : dirtyPair) {
+            for (int i : dirtyPile) {
 
                 if (a.contains(i)) {
                     noOfWash--;
@@ -51,26 +44,25 @@ public class SocksLaundry {
                 if(noOfWash == 0) break;
             }
 
-                for (int i : noRemainingDirtySocks) {
-                    //ensure no of washes no exceeded
-                    if(noOfWash == 0) break;
+            for (int i : noRemainingDirtySocks) {
+                //ensure no of washes no exceeded
+                if(noOfWash == 0) break;
 
-                    if (b.isEmpty())
-                        b.add(i);
-                    else if (!b.contains(i)) {
-                        b.add(i);
+                if (b.isEmpty())
+                    b.add(i);
+                else if (!b.contains(i)) {
+                    b.add(i);
 
-                    } else if (b.contains(i)) {
-                        noOfWash--;
-                        noAllDirtyPairs++;
-                        b.remove(i);
-                    }
-
+                } else if (b.contains(i)) {
+                    noOfWash--;
+                    noAllDirtyPairs++;
+                    b.remove(i);
                 }
+
+            }
 
         }
 
         return noCleanPairs + noOfWatchInClean_Dirty + noAllDirtyPairs;
     }
-
 }
