@@ -9,7 +9,7 @@ public class SocksLaundry {
         int noOfWatchInClean_Dirty = 0;
         Set<Integer> a = new HashSet<Integer>();
         Set<Integer> b = new HashSet<Integer>();
-        Set<Integer> noRemainingDirtySocks = new HashSet<Integer>();
+        List<Integer> noRemainingDirtySocks = new ArrayList<>();
 
         Arrays.sort(cleanPile);
         // get number of clean pairs
@@ -30,16 +30,17 @@ public class SocksLaundry {
             return noCleanPairs;
         }
 
+
         Arrays.sort(dirtyPile);
-        while(noOfWash > 0){
+        if(noOfWash > 0){
             for (int i : dirtyPile) {
 
                 if (a.contains(i)) {
                     noOfWash--;
                     noOfWatchInClean_Dirty++;
                     a.remove(i);
-                } else if (!a.contains(i))//allDirtyPairs.
-                    noRemainingDirtySocks.add(i);
+                } else noRemainingDirtySocks.add(i);
+
                 //ensure no of washes no exceeded
                 if(noOfWash == 0) break;
             }
@@ -47,23 +48,22 @@ public class SocksLaundry {
             for (int i : noRemainingDirtySocks) {
                 //ensure no of washes no exceeded
                 if(noOfWash == 0) break;
+                if (b.isEmpty()) b.add(i);
 
-                if (b.isEmpty())
-                    b.add(i);
-                else if (!b.contains(i)) {
-                    b.add(i);
+                else if (!b.contains(i)) b.add(i);
 
-                } else if (b.contains(i)) {
-                    noOfWash--;
+                 else if (b.contains(i) && noOfWash >= 2) {
+                    noOfWash-=2;
                     noAllDirtyPairs++;
                     b.remove(i);
                 }
 
             }
 
+
         }
 
-        return noCleanPairs + noOfWatchInClean_Dirty + noAllDirtyPairs;
-        
+        return noCleanPairs + noOfWatchInClean_Dirty + noAllDirtyPairs ;
     }
+
 }
